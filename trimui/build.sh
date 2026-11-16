@@ -54,7 +54,8 @@ if [ -x "$out/nvforever" ]; then ln -f "$out/nvforever" "$here/dist/previous-nvf
 rm -rf "$out" && mkdir -p "$out"
 llvm_strip="$(ls "$(rustc --print sysroot)"/lib/rustlib/*/bin/llvm-strip 2>/dev/null | head -1 || true)"
 bin="$CARGO_TARGET_DIR/aarch64-unknown-linux-gnu/${NVF_CARGO_PROFILE:-release}/nvforever"
-if [ -n "$llvm_strip" ]; then "$llvm_strip" -s -o "$out/nvforever" "$bin"; else cp "$bin" "$out/nvforever"; fi
+[ -n "$llvm_strip" ] || { echo "LLVM tools required: rustup component add llvm-tools" >&2; exit 1; }
+"$llvm_strip" -s -o "$out/nvforever" "$bin"
 cp -R "$root/schemas" "$out/schemas"
 cp "$here/package/run.sh" "$here/package/runtime-mainui.sh" "$here/package/setup-swap.sh" "$here/package/README.txt" "$here/package/dev-menu.ini" "$out/"
 cp "$here/FPS-WORK.md" "$here/UPSTREAM-PERFORMANCE.md" "$out/"
@@ -73,5 +74,7 @@ mkdir -p "$out/licenses"
 cp "$root/LICENSE" "$deps/SPIRV-Tools-LICENSE" "$deps/SPIRV-Headers-LICENSE" "$out/licenses/"
 zig cc -target aarch64-linux-gnu.2.33 -O2 -g0 "-ffile-prefix-map=$root=/src/nvforever" "-ffile-prefix-map=$HOME=/build" "$here/tools/loading.c" -o "$out/show-loading"
 zig cc -target aarch64-linux-gnu.2.33 -O2 -g0 "-ffile-prefix-map=$root=/src/nvforever" "-ffile-prefix-map=$HOME=/build" "$here/tools/spirv-normalize.c" -o "$out/spirv-normalize"
+# The cross-linker can reuse C startup objects containing cached debug paths.
+"$llvm_strip" -s "$out/show-loading" "$out/spirv-normalize"
 chmod +x "$out/nvforever" "$out/run.sh" "$out/setup-swap.sh" "$here/dist/NVForever.sh"
 echo "PortMaster package: $here/dist (NVForever.sh and nvforever/ go in the PortMaster ports directory)"
