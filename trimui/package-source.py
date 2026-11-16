@@ -15,7 +15,7 @@ def write_file(archive, path, name):
 
 root = Path(__file__).resolve().parents[1]
 p = argparse.ArgumentParser(description=__doc__)
-p.add_argument("--output", type=Path, default=root / "trimui/release/NVForever-0.3-source.zip")
+p.add_argument("--output", type=Path, default=root / "trimui/release/NVForever-0.3.1-source.zip")
 a = p.parse_args()
 output = a.output.resolve()
 output.parent.mkdir(parents=True, exist_ok=True)

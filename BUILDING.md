@@ -21,7 +21,7 @@ python3 trimui/package-source.py
 Outputs:
 
 - `trimui/release/nvforever.zip`: PortMaster archive, developer menu off, no game/home folders.
-- `trimui/release/NVForever-0.3-source.zip`: corresponding maintained source.
+- `trimui/release/NVForever-0.3.1-source.zip`: corresponding maintained source.
 - SHA-256 files alongside the archives.
 
 The first SDK preparation downloads the ALSA development headers and builds a pinned SPIRV-Tools optimizer from source. `TRIMUI_SYSROOT`, `TRIMUI_DEPS` and `CARGO_TARGET_DIR` can select existing SDK, optimizer and build-cache locations. These paths are environment settings and are not committed.
@@ -36,3 +36,9 @@ cargo run --manifest-path engine/Cargo.toml -p nvforever --example idle_ui_check
 ```
 
 Before distributing, verify ZIP checksums and layout, developer-menu default, shared-library requirements, license/source completeness, screenshot metadata and identifying information in source and compiled files. Test the port on the target hardware. Keep diagnostics separate from matched FPS comparisons.
+
+Launcher/swap regression checks (temporary files and simulated Linux utilities):
+
+```sh
+python3 -m unittest discover -s trimui/tests -v
+```

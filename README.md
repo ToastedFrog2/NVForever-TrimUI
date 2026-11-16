@@ -10,14 +10,11 @@ Requires a **TrimUI Smart Pro**, PortMaster, and the PC game data from your own 
 
 1. Download **nvforever.zip** from Releases. Put the ZIP in `Apps/PortMaster/PortMaster/autoinstall/` on the SD card and open PortMaster. A local/offline installation is also supported.
 2. Copy your PC game's complete `Data` folder to `Data/ports/nvforever/game/Data/` on the SD card. `FalloutNV.esm` must be directly inside that folder. Include the archives and Music/Sound folders; DLC is optional.
-3. The handheld has 1 GB of RAM. Create the required 2 GB swap file once from an SSH session or terminal:
+3. Start **NVForever** from the Ports list. The launcher automatically prepares swap on first launch. No SSH or terminal command is required.
 
-   ```sh
-   sh /mnt/SDCARD/Data/ports/nvforever/setup-swap.sh 2048
-   ```
+The swap file defaults to **internal storage** at `/mnt/UDISK/nvforever.swap`. Creating a new 2 GiB file requires about **2.25 GiB free on UDISK**, including 256 MiB kept free as a setup reserve. A first-run setup screen appears while it is created; this can take several minutes. The launcher reuses an existing configured swap file or a sufficient active internal swap file instead of allocating another one, and enables it on later launches. If setup cannot finish, an on-screen message appears and the game does not start. Free internal storage and retry when the message reports insufficient space.
 
-   This needs approximately 2 GB free on internal storage and can take several minutes. The launcher enables the file on subsequent launches.
-4. Start **NVForever** from the Ports list. Shader compilation can make the first launch slow.
+The game Data stays on the SD card. Shader compilation can also make the first launch slow.
 
 Updates preserve `nvforever/home/` (saves/settings), `nvforever/game/` and the swap file. Back up important saves before updating.
 

@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.3.1 — November 16, 2026
+
+- First launch automatically creates a 2 GiB swap file on internal UDISK, after checking mounted ext4 storage and leaving a 256 MiB free-space reserve.
+- Reuses existing configured or sufficient active internal swap; existing files are not reformatted or overwritten.
+- First-run setup and failure cards appear on the handheld. Awake/UI restoration guards cover the setup period; launch stops if swap cannot be prepared.
+- Temporary allocations are cleaned after failure/interruption, and recorded stale setup files are recovered after a crash.
+- Twelve simulated-utility regression tests cover creation, reuse, insufficient space, existing user files, unsupported filesystems, interruption and stale setup recovery. On-device checks passed for creating/activating a disposable 64 MiB file, active/inactive reuse, space rejection, and reuse of an existing 2 GiB internal swap. A fresh 2 GiB allocation was not repeated.
+- Engine rendering and performance settings are unchanged from 0.3.0.
+
 ## 0.3.0 — November 16, 2026
 
 Experimental release for TrimUI Smart Pro and PortMaster.

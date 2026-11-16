@@ -30,14 +30,6 @@ if [ -r "$APP/extra-env" ]; then
     done < "$APP/extra-env"
 fi
 
-# Swap: 1 GB of RAM is far below what the engine uses on a PC. A swap file named in
-# $APP/swap-file (made by setup-swap.sh) is turned on when it is not already.
-if [ -r "$APP/swap-file" ]; then
-    SWAP=$(head -n 1 "$APP/swap-file")
-    if [ -f "$SWAP" ] && ! awk -v t="$SWAP" 'NR>1 && $1==t {f=1} END {exit !f}' /proc/swaps; then
-        swapon -p 10 "$SWAP" >> "$APP/log.txt" 2>&1 && echo "swap on: $SWAP" >> "$APP/log.txt"
-    fi
-fi
 # Swap early rather than kill: the game's data is far larger than the RAM (put back on exit).
 # NVF_SWAPPINESS=<0-100> sets another value while the game runs; NVF_PAGE_CLUSTER=<n> the
 # pages read per swap-in (2^n), both put back on exit (for measuring paging stalls).
@@ -102,6 +94,17 @@ trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM HUP
 command -v nvf_mainui_apply >/dev/null 2>&1 && nvf_mainui_apply
+# First-run swap setup happens after the awake/UI guards, before starting the game.
+if NVF_APP_DIR="$APP" /bin/sh "$APP/setup-swap.sh" --ensure >> "$APP/log.txt" 2>&1; then
+    :
+else
+    swap_error=$?
+    if [ -x "$APP/show-loading" ]; then
+        if [ "$swap_error" = 20 ]; then "$APP/show-loading" swap-space-error; else "$APP/show-loading" swap-error; fi
+        sleep 12
+    fi
+    exit "$swap_error"
+fi
 [ ! -x "$APP/show-loading" ] || "$APP/show-loading" >> "$APP/log.txt" 2>&1
 
 export HOME="$APP/home"

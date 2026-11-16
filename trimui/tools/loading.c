@@ -34,7 +34,7 @@ static void text(const char *s, unsigned y, unsigned scale, uint32_t color) {
         }
     }
 }
-int main(void) {
+int main(int argc, char **argv) {
     int fd=open("/dev/fb0",O_RDWR);
     struct fb_var_screeninfo v;
     struct fb_fix_screeninfo f;
@@ -50,8 +50,20 @@ int main(void) {
     uint32_t white=alpha|(180u<<v.red.offset)|(189u<<v.green.offset)|(185u<<v.blue.offset);
     for (unsigned y=0;y<height;++y) for(unsigned x=0;x<width;++x) pixels[y*pitch+x]=bg;
     text("NVFOREVER",height/2-115,8,amber);
-    text("LOADING THE MOJAVE",height/2-5,4,white);
-    text("FIRST START MAY TAKE A FEW MINUTES",height/2+75,3,white);
+    const char *headline="LOADING THE MOJAVE";
+    const char *detail="FIRST START MAY TAKE A FEW MINUTES";
+    if (argc>1 && !strcmp(argv[1],"swap")) {
+        headline="PREPARING INTERNAL SWAP";
+        detail="FIRST SETUP MAY TAKE SEVERAL MINUTES";
+    } else if (argc>1 && !strcmp(argv[1],"swap-space-error")) {
+        headline="NOT ENOUGH INTERNAL STORAGE";
+        detail="FREE SPACE ON INTERNAL STORAGE AND RETRY";
+    } else if (argc>1 && !strcmp(argv[1],"swap-error")) {
+        headline="SWAP SETUP COULD NOT FINISH";
+        detail="SEE THE PORT LOG FOR DETAILS";
+    }
+    text(headline,height/2-5,4,white);
+    text(detail,height/2+75,3,white);
     msync(map,bytes,MS_SYNC);
     v.activate=FB_ACTIVATE_VBL;
     if (ioctl(fd,FBIOPAN_DISPLAY,&v)) perror("loading framebuffer present");

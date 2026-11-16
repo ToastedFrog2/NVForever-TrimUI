@@ -1,4 +1,4 @@
-NVForever 0.3 for the TrimUI Smart Pro (PortMaster)
+NVForever 0.3.1 for the TrimUI Smart Pro (PortMaster)
 ===================================================
 
 NVForever is an open-source reimplementation of the Fallout: New Vegas engine. This is
@@ -15,7 +15,8 @@ What you need
 - A TrimUI Smart Pro (other devices are not supported) with PortMaster installed.
 - Your own Fallout: New Vegas PC install, to copy its Data folder from.
 - Room on the SD card for the game's Data folder.
-- About 2 GB free on the handheld's internal storage (/mnt/UDISK) for a swap file.
+- About 2.25 GiB free on internal storage (/mnt/UDISK) for first-run swap setup,
+  unless a sufficient swap file already exists.
 
 
 Install
@@ -39,15 +40,17 @@ Install
    Eject the SD card properly before taking it out: a card pulled while files are still
    being written can lose the copied Data folder.
 
-3. Make the swap file (once). The handheld has 1 GB of RAM and the game needs more,
-   so it is required, not optional. Over SSH (or a terminal app on the device), run:
-     sh /mnt/SDCARD/Data/ports/nvforever/setup-swap.sh 2048
-   This makes a 2 GB swap file at /mnt/UDISK/nvforever.swap. It takes a few minutes,
-   and the game turns it on by itself at every launch after that.
+3. Start NVForever from the Ports list. Swap setup is automatic; no SSH command is
+   needed. A setup screen appears while the launcher creates a 2 GiB file at
+   /mnt/UDISK/nvforever.swap on INTERNAL storage. This can take several minutes.
+   Setup needs about 2.25 GiB free on UDISK, including a 256 MiB reserve. If space
+   is insufficient, the game shows an error and returns to the handheld menu.
+   Free internal space and launch again.
+   Existing configured swap files and sufficient active internal swap are reused;
+   they are not reformatted. Later launches enable/reuse swap automatically.
 
-4. Start NVForever from the Ports list.
-   The first launch is slow: the GPU's shaders are compiled and saved, and the screen
-   can stay on the loading picture for several minutes. Later launches are faster.
+4. The first game load can also be slow while shaders are compiled and saved.
+   Later launches are faster.
 
 
 Updating from an earlier build
@@ -121,7 +124,7 @@ Troubleshooting
 ---------------
 - Log: /mnt/SDCARD/Data/ports/nvforever/log.txt (rewritten at every launch).
 - "FalloutNV.esm not found" in the log: the Data folder is in the wrong place (step 2).
-- The game closes during loading: check that the swap file exists (step 3).
+- The game closes during loading: check the swap setup message and log (step 3).
 - No sound: start the game from the Ports list (the TrimUI menu has to release the
   sound chip first) and check the device volume.
 
@@ -135,7 +138,7 @@ Port source: https://github.com/ToastedFrog2/NVForever-TrimUI
 The source revision for this build is in build-info.txt. Licences are in the
 licenses/ folder.
 NVForever is free software under the GNU GPL version 3 (licenses/LICENSE). The complete
-source code of this build, with all the TrimUI changes, is NVForever-0.3-source.zip,
+source code of this build, with all the TrimUI changes, is NVForever-0.3.1-source.zip,
 distributed alongside this package; if you did not get it, ask whoever gave you this
 package for it.
 Fallout: New Vegas is a trademark of Bethesda Softworks / ZeniMax Media. NVForever is
