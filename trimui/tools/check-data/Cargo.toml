@@ -1,0 +1,14 @@
+[package]
+name = "nvf-check-data"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+fnv-bsa = { path = "../../../crates/fnv-bsa" }
+fnv-inflate = { path = "../../../crates/fnv-inflate" }
+
+[profile.release]
+strip = true

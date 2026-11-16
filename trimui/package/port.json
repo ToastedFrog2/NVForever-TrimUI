@@ -1,0 +1,31 @@
+{
+  "version": 4,
+  "name": "nvforever.zip",
+  "items": [
+    "NVForever.sh",
+    "nvforever/"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "NVForever 0.3 (experimental)",
+    "porter": [
+      "NVForever TrimUI Maintainers"
+    ],
+    "desc": "Native ARM64 NVForever port for TrimUI Smart Pro. Includes optional developer tools, idle-work optimizations and diagnostics. Requires separately owned Fallout: New Vegas PC game data. Performance is experimental and scene-dependent.",
+    "inst": "Requires your own Fallout: New Vegas PC Data folder in nvforever/game/Data and a 2 GB swap file (sh nvforever/setup-swap.sh 2048, once). Saves and user config in nvforever/home are kept on update. Developer menu off by default; enable with home/dev-menu.ini. TrimUI Smart Pro only. See nvforever/README.txt.",
+    "genres": [
+      "rpg"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": true,
+    "runtime": [],
+    "reqs": [
+      "trimui-smart-pro"
+    ],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": "2.33"
+  }
+}

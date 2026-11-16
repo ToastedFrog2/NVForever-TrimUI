@@ -1,0 +1,67 @@
+/target/
+/viewer/target/
+/engine/target/
+/engine/target-*/
+/trimui/dist/
+/trimui/sysroot/
+/trimui/*.log
+/trimui/verification/
+/trimui/*.diagnostic
+/target-*/
+/tools/capture/nvf_capture/target/
+**/runs/
+**/__pycache__/
+*.pyc
+# Private ground truth and game data must never be committed.
+/goldens/
+/parity-lab/goldens/
+*.esm
+*.esp
+*.bsa
+*.nif
+*.dds
+lab.local.json
+baseline.json
+*.bundle
+*.kf
+*.egm
+*.egt
+*.tri
+*.lip
+*.ogg
+*.wav
+*.mp3
+*.fos
+*.esl
+*.spt
+# Videos, bitmap fonts, shader packages and DLC marker files.
+*.bik
+*.fnt
+*.sdp
+*.nam
+# Built programs copied around for checks (never commit binaries).
+*.exe
+*.dll
+# Screenshots and frames rendered from game data (F12, --screenshot, --timelapse).
+nvforever-*.png
+nvf-screenshot-*.png
+# Before/after progress pictures kept locally for pull requests and issues.
+/pr-pictures/
+
+# Generated ARM shader optimizer (rebuild with trimui/build-spirv-opt.sh).
+/trimui/deps/
+/trimui/migration/*.bin
+/trimui/migration/*.vcdiff
+
+# TrimUI release zips (built by trimui/package-portmaster.py) and Finder files.
+/trimui/release/
+.DS_Store
+
+# Local release tools and machine-specific settings.
+.env
+.env.*
+*.pem
+*.key
+*.log
+*.part
+/trimui/dist.next/

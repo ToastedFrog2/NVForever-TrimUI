@@ -1,0 +1,79 @@
+# The Bevy side of NVForever: its own workspace so the format crates and their CI never
+# compile Bevy (docs/adr/0001-bevy-viewer.md, docs/design/layer3.md §2.2).
+[workspace]
+resolver = "2"
+members = ["nvf-assets", "nvf-play", "nvf-viewer", "nvforever"]
+
+[workspace.package]
+version = "0.5.1"
+edition = "2021"
+license = "GPL-3.0-or-later"
+
+[workspace.dependencies]
+# Pinned exactly: upgrade deliberately, in its own commit, with a full parity-lab run.
+# pbr_specular_textures: normal-map alpha as the specular mask (docs/spec-notes/nif.md §6).
+# `debug`: errors name the command or system that failed (stray_commands.rs in nvforever).
+# Bevy's default features spelled out without `bevy_gilrs` and `wayland` (the `gilrs` and
+# `wayland` features of nvforever and nvf-viewer turn them back on, by default): the TrimUI
+# build reads its controls itself (nvforever trimui.rs) and links no libudev or libwayland.
+bevy = { version = "=0.20.1", default-features = false, features = [
+    "default_app", "std", "bevy_winit", "bevy_clipboard", "default_font", "multi_threaded", "webgl2", "x11",
+    "custom_cursor", "sysinfo_plugin", "2d_bevy_render", "3d_bevy_render", "ui_api", "ui_bevy_render", "scene",
+    "picking", "bevy_ui_widgets", "audio", "pbr_specular_textures", "debug",
+] }
+fnv-nif = { path = "../crates/fnv-nif" }
+fnv-dds = { path = "../crates/fnv-dds" }
+fnv-spt = { path = "../crates/fnv-spt" }
+fnv-font = { path = "../crates/fnv-font" }
+fnv-vfs = { path = "../crates/fnv-vfs" }
+fnv-esm = { path = "../crates/fnv-esm" }
+fnv-world = { path = "../crates/fnv-world" }
+fnv-sim = { path = "../crates/fnv-sim" }
+fnv-script = { path = "../crates/fnv-script" }
+fnv-game = { path = "../crates/fnv-game" }
+fnv-ui = { path = "../crates/fnv-ui" }
+fnv-actor = { path = "../crates/fnv-actor" }
+fnv-combat = { path = "../crates/fnv-combat" }
+fnv-phys = { path = "../crates/fnv-phys" }
+fnv-collide = { path = "../crates/fnv-collide" }
+fnv-nav = { path = "../crates/fnv-nav" }
+fnv-ai = { path = "../crates/fnv-ai" }
+fnv-install = { path = "../crates/fnv-install" }
+fnv-util = { path = "../crates/fnv-util" }
+fnv-save = { path = "../crates/fnv-save" }
+infinitier_bik_decoder = "=0.0.14"
+fnv-voice = { path = "../crates/fnv-voice" }
+nvf-assets = { path = "nvf-assets" }
+nvf-play = { path = "nvf-play" }
+clap = { version = "4", features = ["derive", "env"] }
+# BC1 encode/decode on the CPU (generated LOD, docs/design/generated-lod.md); MIT.
+texpresso = { version = "2.0.2", default-features = false }
+# Mesh simplification for the TrimUI's simpler copies of big meshes (nvf-assets mesh_lod.rs,
+# docs/trimui.md "November 10"); meshoptimizer's C++ built by cc; MIT OR Apache-2.0.
+meshopt = "=0.7.0"
+
+# Bevy is slow unoptimised; optimise dependencies even in dev builds.
+[profile.release]
+# File and line numbers in backtraces, for the crash reports (engine/nvforever/src/crash.rs):
+# line tables only, no variable info, so the optimised code is unchanged.
+debug = "line-tables-only"
+
+# The TrimUI build (trimui/build.sh): whole-program optimisation for the Cortex-A53, where
+# the frame's hundreds of small systems are the cost (docs/trimui.md).
+[profile.trimui]
+inherits = "release"
+lto = "fat"
+codegen-units = 1
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+# Patched dependencies (engine/vendor/README.md says what was changed and why).
+[patch.crates-io]
+gpu-allocator = { path = "vendor/gpu-allocator" }
+wgpu-hal = { path = "vendor/wgpu-hal" }
+bevy_render = { path = "vendor/bevy_render" }
+bevy_core_pipeline = { path = "vendor/bevy_core_pipeline" }
