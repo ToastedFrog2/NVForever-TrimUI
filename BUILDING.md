@@ -21,7 +21,7 @@ python3 trimui/package-source.py
 Outputs:
 
 - `trimui/release/nvforever.zip`: PortMaster archive, developer menu off, no game/home folders.
-- `trimui/release/NVForever-0.3.1-source.zip`: corresponding maintained source.
+- `trimui/release/NVForever-0.3.2-source.zip`: corresponding maintained source.
 - SHA-256 files alongside the archives.
 
 The first SDK preparation downloads the ALSA development headers and builds a pinned SPIRV-Tools optimizer from source. `TRIMUI_SYSROOT`, `TRIMUI_DEPS` and `CARGO_TARGET_DIR` can select existing SDK, optimizer and build-cache locations. These paths are environment settings and are not committed.
@@ -42,3 +42,22 @@ Launcher/swap regression checks (temporary files and simulated Linux utilities):
 ```sh
 python3 -m unittest discover -s trimui/tests -v
 ```
+
+## Dependency notices
+
+Generate the release notices from the locked ARM64 graph before committing a release:
+
+```sh
+python3 trimui/tools/generate-licenses.py --offline
+```
+
+Omit `--offline` when the locked Cargo packages have not yet been downloaded.
+The generator includes normal/build dependencies for `trimui,intro-video`, excludes
+dev dependencies, and deduplicates full texts while retaining component attribution.
+Missing published crate texts require reviewed, pinned upstream texts in
+`licensing/supplemental.json`; native/font notices are pinned in `licensing/native.json`.
+Refresh native notices when upgrading Rust, Zig, the font or the optimizer.
+Commit `THIRD-PARTY-LICENSES.txt`, `licensing/inventory.json` and the supporting texts.
+The build generates notices before compilation and copies them into the package.
+Both packaging scripts reject missing or stale notice inventories. The binary ZIP
+also carries `NOTICE.md`, `LEGAL.md` and the separate SPIRV license files.

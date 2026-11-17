@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.3.2 — November 17, 2026
+
+- Include full third-party license texts and copyright notices for the locked TrimUI dependency graph, bundled font, native runtimes and optimizer.
+- Add pinned supplemental license sources and an inventory; packaging rejects missing notices or stale dependency inputs.
+- Correct legal documentation for this source export and remove links to omitted upstream test tools.
+- Packaging/documentation correction only; game and helper executables are unchanged from 0.3.1.
+
 ## 0.3.1 — November 16, 2026
 
 - First launch automatically creates a 2 GiB swap file on internal UDISK, after checking mounted ext4 storage and leaving a 256 MiB free-space reserve.

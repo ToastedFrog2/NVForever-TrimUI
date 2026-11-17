@@ -37,7 +37,7 @@ cargo test --release -p fnv-sim -p fnv-game
 cargo run --manifest-path engine/Cargo.toml -p nvforever --example idle_ui_check --no-default-features
 CARGO_TARGET_DIR="$PWD/engine/target-trimui-profile" NVF_CARGO_PROFILE=release bash trimui/build.sh
 python3 trimui/package-portmaster.py --output trimui/release/0.3-candidate/nvforever.zip
-python3 trimui/package-source.py --output trimui/release/0.3-candidate/NVForever-0.3.1-source.zip
+python3 trimui/package-source.py --output trimui/release/0.3-candidate/NVForever-0.3.2-source.zip
 ```
 
 The headless check compares actual Bevy layout geometry/transforms with caching off

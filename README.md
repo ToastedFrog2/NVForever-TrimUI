@@ -64,4 +64,4 @@ See [BUILDING.md](BUILDING.md) for build instructions and [CONTRIBUTING.md](CONT
 
 NVForever is by LootJunkieAzza and the NVForever contributors. This port includes upstream code based on revision `4d6e4bdf6`, with the object-animation lookup portion of `e12c79d31` and the TrimUI changes described above. See [NOTICE.md](NOTICE.md), [LEGAL.md](LEGAL.md) and [LICENSE](LICENSE).
 
-The engine is GPL-3.0-or-later; bundled third-party components retain their own licenses. Screenshots show gameplay using separately owned game data. NVForever is not affiliated with or endorsed by Bethesda Softworks, ZeniMax Media, Microsoft or Obsidian Entertainment.
+The engine is GPL-3.0-or-later; bundled third-party components retain their own licenses. Full dependency notices ship in both release ZIPs; see [THIRD-PARTY-LICENSES.txt](THIRD-PARTY-LICENSES.txt). Screenshots show gameplay using separately owned game data. NVForever is not affiliated with or endorsed by Bethesda Softworks, ZeniMax Media, Microsoft or Obsidian Entertainment.

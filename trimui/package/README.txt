@@ -1,4 +1,4 @@
-NVForever 0.3.1 for the TrimUI Smart Pro (PortMaster)
+NVForever 0.3.2 for the TrimUI Smart Pro (PortMaster)
 ===================================================
 
 NVForever is an open-source reimplementation of the Fallout: New Vegas engine. This is
@@ -138,8 +138,11 @@ Port source: https://github.com/ToastedFrog2/NVForever-TrimUI
 The source revision for this build is in build-info.txt. Licences are in the
 licenses/ folder.
 NVForever is free software under the GNU GPL version 3 (licenses/LICENSE). The complete
-source code of this build, with all the TrimUI changes, is NVForever-0.3.1-source.zip,
+source code of this build, with all the TrimUI changes, is NVForever-0.3.2-source.zip,
 distributed alongside this package; if you did not get it, ask whoever gave you this
 package for it.
 Fallout: New Vegas is a trademark of Bethesda Softworks / ZeniMax Media. NVForever is
 not affiliated with or endorsed by them, and contains no Bethesda code or game data.
+
+Dependency licenses and copyright notices are bundled in THIRD-PARTY-LICENSES.txt.
+The matching inventory is licenses/THIRD-PARTY-LICENSES.inventory.json.

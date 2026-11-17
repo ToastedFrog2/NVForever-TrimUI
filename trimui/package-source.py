@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-"""Archive the current maintained source (tracked + unignored new files), no builds/data."""
+"""Archive the current maintained source (tracked files only), no builds/data."""
 import argparse
 import hashlib
 from pathlib import Path
 import subprocess
+from tools.license_bundle import validate
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 def write_file(archive, path, name):
-    info = ZipInfo(str(name), date_time=(2026, 11, 16, 0, 0, 0))
+    info = ZipInfo(str(name), date_time=(2026, 11, 17, 0, 0, 0))
     info.create_system = 3
     info.external_attr = (0o100000 | (0o755 if path.stat().st_mode & 0o111 else 0o644)) << 16
     archive.writestr(info, path.read_bytes(), compress_type=ZIP_DEFLATED, compresslevel=6)
 
 
 root = Path(__file__).resolve().parents[1]
+validate(root)
 p = argparse.ArgumentParser(description=__doc__)
-p.add_argument("--output", type=Path, default=root / "trimui/release/NVForever-0.3.1-source.zip")
+p.add_argument("--output", type=Path, default=root / "trimui/release/NVForever-0.3.2-source.zip")
 a = p.parse_args()
 output = a.output.resolve()
 output.parent.mkdir(parents=True, exist_ok=True)
@@ -34,13 +36,13 @@ try:
             if path.resolve() in (output, temporary):
                 continue
             write_file(z, path, "NVForever/" + name)
-        info = ZipInfo("NVForever/SOURCE-STATE.txt", date_time=(2026, 11, 16, 0, 0, 0))
+        info = ZipInfo("NVForever/SOURCE-STATE.txt", date_time=(2026, 11, 17, 0, 0, 0))
         info.create_system = 3
         info.external_attr = 0o100644 << 16
         z.writestr(info, f"Source revision: {state}\n")
     with ZipFile(temporary) as z:
         assert z.testzip() is None
-        for needed in ("Cargo.toml", "Cargo.lock", "engine/Cargo.lock", "LICENSE", "trimui/FPS-WORK.md", "trimui/build.sh", "engine/nvforever/src/trimui_idle.rs"):
+        for needed in ("THIRD-PARTY-LICENSES.txt", "licensing/inventory.json", "Cargo.toml", "Cargo.lock", "engine/Cargo.lock", "LICENSE", "trimui/FPS-WORK.md", "trimui/build.sh", "engine/nvforever/src/trimui_idle.rs"):
             assert "NVForever/" + needed in z.namelist(), needed
         assert not any("/target/" in n or "/target-trimui" in n or "/.git/" in n or "/trimui/release/" in n for n in z.namelist())
     temporary.replace(output)

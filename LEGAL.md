@@ -39,19 +39,14 @@ the project claims no rights in them. The name "NVForever" refers to this projec
 
 ## No game files distributed
 
-This repository and its releases contain no content from the game:
+The downloadable engine contains no original game plugins, archives, meshes,
+textures, animations, audio, saves or original game executable. Users supply their
+own lawfully purchased game data. The release includes this project's executable;
+the repository includes illustrative gameplay screenshots captured with separately
+owned game data. Those screenshots are not game assets for installation or reuse.
 
-- no plugins or archives (`.esm`, `.esp`, `.bsa`);
-- no meshes, textures or animations (`.nif`, `.dds`, `.kf`, FaceGen `.egm`/`.egt`/`.tri`);
-- no audio, voice or lip-sync files (`.ogg`, `.wav`, `.mp3`, `.lip`);
-- no saves, no executables, no screenshots or frames rendered from game data.
-
-`.gitignore` blocks these file types so they cannot be committed by accident.
-
-Testing does need material derived from the game: reference outputs ("goldens"), dumps,
-captures from the running game and reference screenshots. These are produced by each
-developer from their own copy and stay private, in a folder outside the repository. They
-are never committed or published.
+Private reference outputs, dumps and test captures are not distributed. The
+upstream parity/capture test tools are not included in this TrimUI source export.
 
 What the repository does contain is our own description of the game's file formats and
 behaviour (`docs/spec-notes/`, `schemas/`) and the tools that read your copy of the data.
@@ -85,12 +80,10 @@ NVForever follows a clean-room process, in the spirit of OpenMW.
 2. *The data files of a lawfully purchased copy.* We read the game's own archives and
    plugins and record what is in them: counts, layouts that decode with nothing left
    over, files that can be rewritten byte for byte.
-3. *The running original game.* We observe what the unmodified game does from the
-   outside: `nvf_capture`, a plugin for the xNVSE script extender, runs unattended jobs
-   and records results such as item counts, quest stages, positions over time and
-   screenshots. It works only through xNVSE's public plugin interface and the game's own
-   script language; it uses no game memory addresses and no game data structures
-   ([docs/spec-notes/xnvse-capture.md](docs/spec-notes/xnvse-capture.md)).
+3. *The running original game.* Upstream observes the unmodified game through
+   public interfaces and its script language. The upstream capture methodology is
+   described in [the retained specification](docs/spec-notes/xnvse-capture.md).
+   The capture plugin itself is not part of this distribution.
 
 **Sources we do not use**
 
@@ -115,14 +108,13 @@ NVForever follows a clean-room process, in the spirit of OpenMW.
   `[hypothesis]` (not yet verified). Offsets, opcodes and field meanings are never
   invented.
 - The implementation is written from those notes, not from the original program.
-- Each layer is checked twice: against independent readers written from the same notes
-  (`tools/capture/oracle_*.py`), and against captures from the original game, by the
-  parity lab ([parity-lab/README.md](parity-lab/README.md)).
+- Upstream uses independent readers and captures from the original game for
+  parity checks. Those test tools and private reference materials are omitted from
+  this export. This port's checks are documented in [BUILDING.md](BUILDING.md)
+  and [trimui/FPS-WORK.md](trimui/FPS-WORK.md).
 
-Contributions are accepted on the same terms: by contributing you confirm that your work
-follows these rules and that you have the right to submit it, and each commit is signed
-off under the [Developer Certificate of Origin](https://developercertificate.org/)
-([CONTRIBUTING.md](CONTRIBUTING.md#licence)).
+Contributions must follow the same provenance rules and be work the contributor has
+the right to submit; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Licence
 
@@ -137,14 +129,13 @@ This licence covers NVForever's own code, schemas and documentation. It does not
 and grants no rights in, *Fallout: New Vegas* or its data files, which remain the property
 of their owners and subject to the terms under which you bought the game.
 
-Third-party Rust crates that NVForever depends on keep their own licences (MIT,
-Apache-2.0 and similar permissive licences, and a few MPL-2.0 crates). The allowed set is
-enforced by `cargo deny` ([deny.toml](deny.toml),
-[docs/design/dependencies.md](docs/design/dependencies.md)). Every release archive
-carries `THIRD-PARTY-LICENSES.txt`: each package the programs are built from, its
-licence and where its source is, and the licence texts the packages ship.
+Third-party components retain their own licences. Each downloadable binary and
+source archive includes [THIRD-PARTY-LICENSES.txt](THIRD-PARTY-LICENSES.txt), with
+component versions, source locations, copyright notices and licence texts. The
+locked TrimUI release graph includes normal and build dependencies conservatively;
+development dependencies are excluded. Bundled font and native runtime notices
+are included as well. The source includes the pinned supplemental texts and
+machine-readable inventory under [licensing/](licensing/).
 
-The capture plugin `nvf_capture` is a separate program that runs inside the original
-game. It is under the same licence with an additional permission under GPLv3 section 7
-to be combined with the game and the xNVSE script extender
-([tools/capture/nvf_capture/LICENSE-EXCEPTION.txt](tools/capture/nvf_capture/LICENSE-EXCEPTION.txt)).
+The generator and packaging checks are documented in [BUILDING.md](BUILDING.md).
+Changing dependencies requires regenerating and reviewing the notices before release.

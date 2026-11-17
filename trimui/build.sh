@@ -42,6 +42,8 @@ export CFLAGS_aarch64_unknown_linux_gnu="${CFLAGS_aarch64_unknown_linux_gnu:-} -
 export CXXFLAGS_aarch64_unknown_linux_gnu="${CXXFLAGS_aarch64_unknown_linux_gnu:-} -ffile-prefix-map=$root=/src/nvforever -ffile-prefix-map=$HOME=/build"
 export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$root/engine/target-trimui}"
 
+python3 "$here/tools/generate-licenses.py"
+
 cd "$root/engine"
 cargo zigbuild --profile "${NVF_CARGO_PROFILE:-release}" --target aarch64-unknown-linux-gnu.2.33 -p nvforever \
     --no-default-features --features trimui,intro-video
@@ -60,7 +62,7 @@ cp -R "$root/schemas" "$out/schemas"
 cp "$here/package/run.sh" "$here/package/runtime-mainui.sh" "$here/package/setup-swap.sh" "$here/package/README.txt" "$here/package/dev-menu.ini" "$out/"
 cp "$here/FPS-WORK.md" "$here/UPSTREAM-PERFORMANCE.md" "$out/"
 cp "$here/package/NVForever.sh" "$here/dist/"
-cp "$root/LICENSE" "$out/"
+cp "$root/LICENSE" "$root/NOTICE.md" "$root/LEGAL.md" "$root/THIRD-PARTY-LICENSES.txt" "$out/"
 cp "$here/package/port.json" "$out/"
 revision="${NVF_SOURCE_REVISION:-$(git -C "$root" rev-parse HEAD)}"
 printf 'source=https://github.com/ToastedFrog2/NVForever-TrimUI\nrevision=%s\nprofile=trimui-portmaster\ncargo_profile=%s\n' "$revision" "${NVF_CARGO_PROFILE:-release}" > "$out/build-info.txt"
@@ -71,6 +73,7 @@ mkdir -p "$out/tools"
 cp "$here/tools/frame-costs.py" "$here/tools/summarize-frame-costs.py" "$here/tools/benchmark-fps.sh" "$out/tools/"
 cp "$deps/spirv-opt" "$deps/SPIRV-Tools-LICENSE" "$deps/SPIRV-Headers-LICENSE" "$deps/spirv-opt.version" "$out/"
 mkdir -p "$out/licenses"
+cp "$root/licensing/inventory.json" "$out/licenses/THIRD-PARTY-LICENSES.inventory.json"
 cp "$root/LICENSE" "$deps/SPIRV-Tools-LICENSE" "$deps/SPIRV-Headers-LICENSE" "$out/licenses/"
 zig cc -target aarch64-linux-gnu.2.33 -O2 -g0 "-ffile-prefix-map=$root=/src/nvforever" "-ffile-prefix-map=$HOME=/build" "$here/tools/loading.c" -o "$out/show-loading"
 zig cc -target aarch64-linux-gnu.2.33 -O2 -g0 "-ffile-prefix-map=$root=/src/nvforever" "-ffile-prefix-map=$HOME=/build" "$here/tools/spirv-normalize.c" -o "$out/spirv-normalize"
