@@ -1,0 +1,28 @@
+# Public parser regression inputs retained from the upstream smoke scenarios.
+# The full smoke runner and game-dependent expectations are not distributed.
+# Source: LootJunkieAzza/NVForever at 4d6e4bdf6, tools/smoke/scenarios.toml.
+
+[[scenario]]
+name = "wheel-parser-1"
+[scenario.env]
+NVF_PLAY_TEST_WHEEL = "19:open:CraigBooneREF,20:stay_follow,25:close,35:open,36:stay_follow,41:near_far,43:aggressive_passive,45:ranged_melee,47:stimpak,50:back_up,52:close,61:open,62:inventory"
+
+[[scenario]]
+name = "wheel-parser-2"
+[scenario.env]
+NVF_PLAY_TEST_HOTKEYS = "16:assign:1:WeapNV357Revolver,16.1:assign:3:WeapNVVarmintRifle,16.2:assign:4:Stimpak,16.3:assign:5:OutfitMerc01,16.4:assign:2:Stimpak,18:tap:1,20:tap:4,22:hold:1,23:point:90,23.5:press:3,24:release,26:hold:5,27:cancel,27.5:release,29:tap:2,31:tap:5,33:tap:5,35:tap:8"
+
+[[scenario]]
+name = "wheel-parser-3"
+[scenario.env]
+NVF_PLAY_TEST_HOTKEYS = "16:assign:1:WeapNV357Revolver,16.1:assign:3:WeapNVVarmintRifle"
+
+[[scenario]]
+name = "wheel-parser-4"
+[scenario.env]
+NVF_PLAY_TEST_HOTKEYS = "16:assign:1:WeapNV357Revolver,16.1:assign:3:WeapNVVarmintRifle,16.2:assign:4:Stimpak,16.3:assign:5:OutfitMerc01"
+
+[[scenario]]
+name = "wheel-parser-5"
+[scenario.env]
+NVF_PLAY_TEST_HOTKEYS = "27:tap:4"

@@ -61,3 +61,7 @@ Commit `THIRD-PARTY-LICENSES.txt`, `licensing/inventory.json` and the supporting
 The build generates notices before compilation and copies them into the package.
 Both packaging scripts reject missing or stale notice inventories. The binary ZIP
 also carries `NOTICE.md`, `LEGAL.md` and the separate SPIRV license files.
+
+The source export retains a small `tools/smoke/scenarios.toml` with the public
+wheel-parser inputs used by gameplay unit tests. It does not include the full
+upstream smoke runner or game-dependent expectations.
