@@ -24,6 +24,7 @@ Updates preserve `nvforever/home/` (saves/settings), `nvforever/game/` and the s
 | --- | --- |
 | A / B | Confirm / cancel |
 | Start | Pause menu |
+| Power | Normal handheld sleep/wake |
 | Menu + Start, held for one second | Exit to the handheld menu |
 | Menu, when the developer menu is enabled | Open or close the developer panel |
 
@@ -48,7 +49,14 @@ The optional developer menu is enabled in the first image for demonstration; the
 
 ![Gameplay](docs/images/gameplay.png)
 
-## Version 0.3
+## Version 0.3.3
+
+- Reduces NIF decoding allocations and uses a direct B-spline span lookup.
+- Skips exact actor/trigger collision tests for distant pairs.
+- Filters repeated/stale audio errors after resume and allows normal power-button suspend.
+- Retains automatic internal swap setup and complete dependency licence notices.
+
+The 0.3 series also:
 
 - Skips unchanged UI layout/stack work and unchanged developer-panel text writes.
 - Resolves clock-global identifiers once and reuses placement lookups during enable-parent checks.
