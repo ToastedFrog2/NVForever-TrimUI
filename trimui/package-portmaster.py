@@ -9,7 +9,7 @@ import argparse
 from tools.license_bundle import validate
 
 def write_file(archive, path, name):
-    info = ZipInfo(str(name), date_time=(2026, 11, 17, 0, 0, 0))
+    info = ZipInfo(str(name), date_time=(2026, 11, 18, 0, 0, 0))
     info.create_system = 3
     info.external_attr = (0o100000 | (0o755 if path.stat().st_mode & 0o111 else 0o644)) << 16
     archive.writestr(info, path.read_bytes(), compress_type=ZIP_DEFLATED, compresslevel=6)

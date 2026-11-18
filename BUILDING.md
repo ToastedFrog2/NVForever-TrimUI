@@ -21,7 +21,7 @@ python3 trimui/package-source.py
 Outputs:
 
 - `trimui/release/nvforever.zip`: PortMaster archive, developer menu off, no game/home folders.
-- `trimui/release/NVForever-0.3.2-source.zip`: corresponding maintained source.
+- `trimui/release/NVForever-0.3.3-source.zip`: corresponding maintained source.
 - SHA-256 files alongside the archives.
 
 The first SDK preparation downloads the ALSA development headers and builds a pinned SPIRV-Tools optimizer from source. `TRIMUI_SYSROOT`, `TRIMUI_DEPS` and `CARGO_TARGET_DIR` can select existing SDK, optimizer and build-cache locations. These paths are environment settings and are not committed.

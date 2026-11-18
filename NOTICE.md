@@ -1,6 +1,6 @@
 # Attribution and modification notice
 
-This is a modified distribution of NVForever for the TrimUI Smart Pro, prepared November 17, 2026.
+This is a modified distribution of NVForever for the TrimUI Smart Pro, prepared November 18, 2026.
 
 Original engine: LootJunkieAzza and the NVForever contributors, https://github.com/LootJunkieAzza/NVForever.
 Base engine revision: 4d6e4bdf6. Additional upstream object-animation lookup change: e12c79d31.

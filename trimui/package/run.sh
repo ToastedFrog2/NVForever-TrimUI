@@ -59,14 +59,10 @@ if [ "${NVF_CPU_PERFORMANCE:-1}" = 1 ] && [ -w "$CPU_POLICY/scaling_governor" ];
     echo performance > "$CPU_POLICY/scaling_governor" 2>/dev/null || CPU_OLD_GOVERNOR=""
 fi
 
-WAKE_OWNED=0
-if [ ! -e /tmp/stay_awake ]; then touch /tmp/stay_awake; WAKE_OWNED=1; fi
-ALIVE_OWNED=0
-if [ ! -e /tmp/stay_alive ]; then touch /tmp/stay_alive; ALIVE_OWNED=1; fi
-KERNEL_WAKE_OWNED=0
-if [ -w /sys/power/wake_lock ] && ! grep -qw nvforever_game /sys/power/wake_lock; then
-    echo nvforever_game > /sys/power/wake_lock && KERNEL_WAKE_OWNED=1
-fi
+# No keep-awake holds (/tmp/stay_awake, /tmp/stay_alive, a kernel wake lock): with them the
+# power button only turned the screen off and the game ran on. Without them TrimUI's keymon
+# puts the handheld to sleep about 10 s after the screen goes off, the game with it, and the
+# power button wakes it [observed 2026-11-17]. Testing over SSH can still create them by hand.
 # Free the screen and RAM: TrimUI's menu, OSD and music service are closed for
 # the game and restored after it, also if the launcher is killed (runtime-mainui.sh, from
 # the Skyrim and hakuX ports; they share one owner file so none restores another's UI).
@@ -79,9 +75,6 @@ done
 cleanup() {
     command -v nvf_mainui_restore >/dev/null 2>&1 && nvf_mainui_restore
     for p in $MAINUI_OWNED; do kill -CONT "$p" 2>/dev/null || :; done
-    [ "$WAKE_OWNED" = 0 ] || rm -f /tmp/stay_awake
-    [ "$ALIVE_OWNED" = 0 ] || rm -f /tmp/stay_alive
-    [ "$KERNEL_WAKE_OWNED" = 0 ] || echo nvforever_game > /sys/power/wake_unlock
     [ -z "$SWAPPINESS" ] || echo "$SWAPPINESS" > /proc/sys/vm/swappiness
     [ -z "$PAGE_CLUSTER" ] || echo "$PAGE_CLUSTER" > /proc/sys/vm/page-cluster
     if [ -n "$CPU_OLD_GOVERNOR" ]; then
@@ -94,7 +87,7 @@ trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM HUP
 command -v nvf_mainui_apply >/dev/null 2>&1 && nvf_mainui_apply
-# First-run swap setup happens after the awake/UI guards, before starting the game.
+# First-run swap setup happens after the UI guards, before starting the game.
 if NVF_APP_DIR="$APP" /bin/sh "$APP/setup-swap.sh" --ensure >> "$APP/log.txt" 2>&1; then
     :
 else

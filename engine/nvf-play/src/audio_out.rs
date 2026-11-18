@@ -457,8 +457,9 @@ impl AudioOut {
 
 enum Command {
     Reopen(&'static str),
-    /// The open stream reported an error (sent from cpal's thread).
-    StreamFailed(String),
+    /// A stream reported an error (sent from cpal's thread), with the open it belongs to
+    /// (`Stats::opens` once that stream had opened).
+    StreamFailed(u32, String),
 }
 
 #[derive(Default)]
@@ -730,14 +731,20 @@ fn open(shared: &Arc<Mutex<MixerSource>>, tx: &Sender<Command>, stats: &Arc<Stat
         let name = device_name(&device);
         let tx = tx.clone();
         let wanted = device_rate().filter(|&r| supports_rate(&device, r));
+        // Each stream reports one error, tagged with its open: a stream left broken by a
+        // system sleep (the handheld's power button) repeats `POLLERR` hundreds of times
+        // before it is dropped, and every queued copy tore down the new stream that replaced
+        // it, a reopen every 0.25 s for about a minute of silence [observed 2026-11-17, TrimUI].
+        let open_no = stats.opens.load(Ordering::Relaxed) + 1;
+        let reported = std::sync::atomic::AtomicBool::new(false);
         let opened = DeviceSinkBuilder::from_device(device).and_then(|b| {
             let b = match wanted {
                 Some(r) => b.with_sample_rate(NonZero::new(r).unwrap()),
                 None => b,
             };
             b.with_error_callback(move |e: rodio::cpal::StreamError| {
-                if !matches!(e, rodio::cpal::StreamError::BufferUnderrun) {
-                    let _ = tx.send(Command::StreamFailed(e.to_string()));
+                if !matches!(e, rodio::cpal::StreamError::BufferUnderrun) && !reported.swap(true, Ordering::Relaxed) {
+                    let _ = tx.send(Command::StreamFailed(open_no, e.to_string()));
                 }
             })
             .open_stream()
@@ -772,9 +779,11 @@ fn watch(shared: Arc<Mutex<MixerSource>>, rx: std::sync::mpsc::Receiver<Command>
         let wait = if device.is_some() { next_poll.saturating_duration_since(Instant::now()) } else { DRAIN_STEP };
         match rx.recv_timeout(wait) {
             Ok(Command::Reopen(why)) => reason = Some(why.to_string()),
-            // A stale error from a device already dropped would be harmless: reopening is cheap.
-            Ok(Command::StreamFailed(e)) if device.is_some() => reason = Some(format!("the stream stopped: {e}")),
-            Ok(Command::StreamFailed(_)) | Err(RecvTimeoutError::Timeout) => {}
+            // Only the open stream's error counts; one from a stream already dropped is stale.
+            Ok(Command::StreamFailed(open_no, e)) if device.is_some() && open_no == stats.opens.load(Ordering::Relaxed) => {
+                reason = Some(format!("the stream stopped: {e}"))
+            }
+            Ok(Command::StreamFailed(..)) | Err(RecvTimeoutError::Timeout) => {}
             Err(RecvTimeoutError::Disconnected) => return,
         }
         let now = Instant::now();

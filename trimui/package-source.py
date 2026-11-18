@@ -8,7 +8,7 @@ from tools.license_bundle import validate
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 def write_file(archive, path, name):
-    info = ZipInfo(str(name), date_time=(2026, 11, 17, 0, 0, 0))
+    info = ZipInfo(str(name), date_time=(2026, 11, 18, 0, 0, 0))
     info.create_system = 3
     info.external_attr = (0o100000 | (0o755 if path.stat().st_mode & 0o111 else 0o644)) << 16
     archive.writestr(info, path.read_bytes(), compress_type=ZIP_DEFLATED, compresslevel=6)
@@ -17,7 +17,7 @@ def write_file(archive, path, name):
 root = Path(__file__).resolve().parents[1]
 validate(root)
 p = argparse.ArgumentParser(description=__doc__)
-p.add_argument("--output", type=Path, default=root / "trimui/release/NVForever-0.3.2-source.zip")
+p.add_argument("--output", type=Path, default=root / "trimui/release/NVForever-0.3.3-source.zip")
 a = p.parse_args()
 output = a.output.resolve()
 output.parent.mkdir(parents=True, exist_ok=True)
@@ -36,7 +36,7 @@ try:
             if path.resolve() in (output, temporary):
                 continue
             write_file(z, path, "NVForever/" + name)
-        info = ZipInfo("NVForever/SOURCE-STATE.txt", date_time=(2026, 11, 17, 0, 0, 0))
+        info = ZipInfo("NVForever/SOURCE-STATE.txt", date_time=(2026, 11, 18, 0, 0, 0))
         info.create_system = 3
         info.external_attr = 0o100644 << 16
         z.writestr(info, f"Source revision: {state}\n")

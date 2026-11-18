@@ -1,4 +1,4 @@
-NVForever 0.3.2 for the TrimUI Smart Pro (PortMaster)
+NVForever 0.3.3 for the TrimUI Smart Pro (PortMaster)
 ===================================================
 
 NVForever is an open-source reimplementation of the Fallout: New Vegas engine. This is
@@ -62,6 +62,7 @@ settings (nvforever/home/), your game Data (nvforever/game/) and the swap file a
 Controls
 --------
 The built-in pad works as an Xbox controller.
+- Power: normal handheld sleep/wake; audio output reconnects after resume.
 - Start: pause menu
 - A: confirm, B: cancel (to match the handheld's labels)
 - Hold Menu + Start for a second: quit back to the TrimUI menu
@@ -138,7 +139,7 @@ Port source: https://github.com/ToastedFrog2/NVForever-TrimUI
 The source revision for this build is in build-info.txt. Licences are in the
 licenses/ folder.
 NVForever is free software under the GNU GPL version 3 (licenses/LICENSE). The complete
-source code of this build, with all the TrimUI changes, is NVForever-0.3.2-source.zip,
+source code of this build, with all the TrimUI changes, is NVForever-0.3.3-source.zip,
 distributed alongside this package; if you did not get it, ask whoever gave you this
 package for it.
 Fallout: New Vegas is a trademark of Bethesda Softworks / ZeniMax Media. NVForever is

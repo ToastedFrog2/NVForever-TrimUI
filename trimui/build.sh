@@ -65,7 +65,7 @@ cp "$here/package/NVForever.sh" "$here/dist/"
 cp "$root/LICENSE" "$root/NOTICE.md" "$root/LEGAL.md" "$root/THIRD-PARTY-LICENSES.txt" "$out/"
 cp "$here/package/port.json" "$out/"
 revision="${NVF_SOURCE_REVISION:-$(git -C "$root" rev-parse HEAD)}"
-printf 'source=https://github.com/ToastedFrog2/NVForever-TrimUI\nrevision=%s\nprofile=trimui-portmaster\ncargo_profile=%s\n' "$revision" "${NVF_CARGO_PROFILE:-release}" > "$out/build-info.txt"
+printf 'source=https://github.com/ToastedFrog2/NVForever-TrimUI\nrevision=%s\nprofile=trimui-portmaster\ncargo_profile=%s\npackage_version=0.3.3\n' "$revision" "${NVF_CARGO_PROFILE:-release}" > "$out/build-info.txt"
 if [ -z "${NVF_SOURCE_REVISION:-}" ] && [ -n "$(git -C "$root" status --porcelain --untracked-files=normal)" ]; then
     echo 'local_changes=true' >> "$out/build-info.txt"
 fi
