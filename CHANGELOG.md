@@ -6,7 +6,7 @@
 - Find uniform B-spline spans directly instead of walking knots; regression cases compare both results.
 - Reject distant actor/trigger pairs before exact collision tests; a deterministic 20,000-pair regression checks touching pairs are retained.
 - Coalesce audio stream errors and ignore errors from replaced streams to prevent repeated reopen cycles after sleep.
-- Allow normal handheld suspend during gameplay by removing launcher keep-awake holds. Swap preparation retains its own temporary awake guards.
+- Allow normal handheld suspend during gameplay by removing launcher keep-awake holds.
 - This release includes the same full third-party notices as 0.3.2. Performance changes are not a matched on-device FPS benchmark.
 
 ## 0.3.2 — November 17, 2026
