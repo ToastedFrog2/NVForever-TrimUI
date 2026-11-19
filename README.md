@@ -12,6 +12,27 @@ Requires a **TrimUI Smart Pro**, PortMaster, and the PC game data from your own 
 2. Copy your PC game's complete `Data` folder to `Data/ports/nvforever/game/Data/` on the SD card. `FalloutNV.esm` must be directly inside that folder. Include the archives and Music/Sound folders; DLC is optional.
 3. Start **NVForever** from the Ports list. The launcher automatically prepares swap on first launch. No SSH or terminal command is required.
 
+### Required game files
+
+Copy these eight files from your own PC game's `Data` folder, together with the loose `Music/` and `Sound/` folders:
+
+```text
+FalloutNV.esm
+Fallout - Textures.bsa
+Fallout - Textures2.bsa
+Fallout - Meshes.bsa
+Fallout - Voices1.bsa
+Fallout - Sound.bsa
+Fallout - Misc.bsa
+Update.bsa
+```
+
+Place the files directly in `/mnt/SDCARD/Data/ports/nvforever/game/Data/`, with `Music/` and `Sound/` inside that same folder. The loose `Sound/` folder and `Fallout - Sound.bsa` are separate inputs; copy both.
+
+**DLC is optional.** To include a DLC, copy its `.esm` and matching `.bsa` archives into the same `Data/` folder. The Windows game executable, launcher, Steam files and DLLs are not required.
+
+### First launch and updates
+
 The swap file defaults to **internal storage** at `/mnt/UDISK/nvforever.swap`. Creating a new 2 GiB file requires about **2.25 GiB free on UDISK**, including 256 MiB kept free as a setup reserve. A first-run setup screen appears while it is created; this can take several minutes. The launcher reuses an existing configured swap file or a sufficient active internal swap file instead of allocating another one, and enables it on later launches. If setup cannot finish, an on-screen message appears and the game does not start. Free internal storage and retry when the message reports insufficient space.
 
 The game Data stays on the SD card. Shader compilation can also make the first launch slow.
